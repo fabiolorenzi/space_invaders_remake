@@ -58,7 +58,7 @@ def shoot_bullet(x, y):
 # Check if bullet hit an enemy
 def enemy_hit(enemyX, enemyY, bulletX, bulletY):
     distance = math.sqrt((math.pow(enemyX - bulletX, 2)) + (math.pow(enemyY - bulletY, 2)))
-    if distance < 27:
+    if distance < 27 and bullet_state == "fire":
         return True
     return False
 
