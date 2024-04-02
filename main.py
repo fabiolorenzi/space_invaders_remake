@@ -111,7 +111,7 @@ while running:
             bulletY = 460
             bullet_state = "ready"
             score += 1
-            print(score)
+            # The code below is to regenerate a new enemy when hit
             enemyX[i] = random.randint(1, 730)
             enemyY[i] = 20
             enemyX_change[i] = 1
