@@ -87,6 +87,8 @@ while running:
             elif event.key == pygame.K_RIGHT:
                 playerX_change = 3
             elif event.key == pygame.K_SPACE and bullet_state == "ready":
+                bullet_sound = pygame.mixer.Sound("media/audio/bullet.wav")
+                bullet_sound.play()
                 bulletX = playerX
                 shoot_bullet(playerX, bulletY)
         if event.type == pygame.KEYUP:
@@ -118,6 +120,8 @@ while running:
 
         collision = enemy_hit(enemyX[i], enemyY[i], bulletX, bulletY)
         if collision:
+            enemy_hit_sound = pygame.mixer.Sound("media/audio/hit.wav")
+            enemy_hit_sound.play()
             bulletY = 460
             bullet_state = "ready"
             score += 1
