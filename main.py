@@ -16,6 +16,7 @@ pygame.display.set_icon(icon)
 score = 0
 enemies_number = 10
 enemies_speed = 0.5
+is_player_dead = False
 
 # Player
 playerImg = pygame.image.load("media/characters/player.png")
@@ -56,7 +57,7 @@ def shoot_bullet(x, y):
     screen.blit(bulletImg, (x + 20, y))
 
 # Check if bullet hit an enemy
-def enemy_hit(enemyX, enemyY, bulletX, bulletY):
+def enemy_collision(enemyX, enemyY, bulletX, bulletY):
     distance = math.sqrt((math.pow(enemyX - bulletX, 2)) + (math.pow(enemyY - bulletY, 2)))
     if distance < 27 and bullet_state == "fire":
         return True
@@ -67,9 +68,21 @@ font = pygame.font.Font("media/fonts/Workbench-Regular.ttf", 32)
 textX = 10
 textY = 10
 
+over_font = pygame.font.Font("media/fonts/Workbench-Regular.ttf", 64)
+
 def show_score_text(x, y):
     score_text = font.render("Score: " + str(score), True, (255, 255, 255))
     screen.blit(score_text, (x, y))
+
+def game_over_text():
+    over_score_text = over_font.render("Game over", True, (255, 255, 255))
+    screen.blit(over_score_text, (250, 250))
+
+# Game over
+def game_over():
+    global is_player_dead
+    is_player_dead = True
+    game_over_text()
 
 # Game loop
 
@@ -106,7 +119,9 @@ while running:
 
     if playerX + playerX_change > 2 and playerX + playerX_change < 730:
         playerX += playerX_change
-    player(playerX, playerY)
+
+    if is_player_dead == False:
+        player(playerX, playerY)
 
     for i in range(enemies_number):
         enemyX[i] += enemyX_change[i]
@@ -118,7 +133,10 @@ while running:
             enemyX[i] = 730
             enemyX_change[i] = enemies_speed * -1
 
-        collision = enemy_hit(enemyX[i], enemyY[i], bulletX, bulletY)
+        if enemyY[i] > 430:
+            game_over()
+
+        collision = enemy_collision(enemyX[i], enemyY[i], bulletX, bulletY)
         if collision:
             enemy_hit_sound = pygame.mixer.Sound("media/audio/hit.wav")
             enemy_hit_sound.play()
@@ -132,7 +150,8 @@ while running:
             enemies_speed += 0.1
             enemyX_change[i] = enemies_speed
         
-        enemy(i, enemyX[i], enemyY[i])
+        if is_player_dead == False:
+            enemy(i, enemyX[i], enemyY[i])
     
     show_score_text(textX, textY)
     pygame.display.update()
