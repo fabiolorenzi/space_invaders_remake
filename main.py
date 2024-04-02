@@ -1,4 +1,5 @@
 import pygame
+import math
 import random
 
 pygame.init()
@@ -10,6 +11,9 @@ background = pygame.image.load("media/backgrounds/background.jpeg")
 pygame.display.set_caption("Space Invaders Remake")
 icon = pygame.image.load("media/icons/main_icon.png")
 pygame.display.set_icon(icon)
+
+# Main game variables
+score = 0
 
 # Player
 playerImg = pygame.image.load("media/characters/player.png")
@@ -42,6 +46,13 @@ def shoot_bullet(x, y):
     bullet_state = "fire"
     screen.blit(bulletImg, (x + 20, y))
 
+# Check if bullet hit an enemy
+def enemy_hit(enemyX, enemyY, bulletX, bulletY):
+    distance = math.sqrt((math.pow(enemyX - bulletX, 2)) + (math.pow(enemyY - bulletY, 2)))
+    if distance < 27:
+        return True
+    return False
+
 # Game loop
 
 running = True
@@ -72,6 +83,13 @@ while running:
         if bulletY <= 5:
             bulletY = 460
             bullet_state = "ready"
+    
+    collision = enemy_hit(enemyX, enemyY, bulletX, bulletY)
+    if collision:
+        bulletY = 460
+        bullet_state = "ready"
+        score += 1
+        print(score)
 
     if playerX + playerX_change > 2 and playerX + playerX_change < 730:
         playerX += playerX_change
