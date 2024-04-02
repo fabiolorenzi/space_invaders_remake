@@ -33,14 +33,14 @@ def enemy(x, y):
 # Bullet
 bulletImg = pygame.image.load("media/objects/bullet.png")
 bulletX = 0
-bulletY = 470
+bulletY = 460
 bulletY_change = 3
 bullet_state = "ready"
 
 def shoot_bullet(x, y):
     global bullet_state
     bullet_state = "fire"
-    screen.blit(bulletImg, (x + 16, y))
+    screen.blit(bulletImg, (x + 20, y))
 
 # Game loop
 
@@ -66,11 +66,11 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    if bullet_state is "fire":
+    if bullet_state == "fire":
         shoot_bullet(bulletX, bulletY)
         bulletY -= bulletY_change
         if bulletY <= 5:
-            bulletY = 470
+            bulletY = 460
             bullet_state = "ready"
 
     if playerX + playerX_change > 2 and playerX + playerX_change < 730:
