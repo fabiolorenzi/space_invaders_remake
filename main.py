@@ -15,7 +15,7 @@ pygame.display.set_icon(icon)
 # Main game variables
 score = 0
 enemies_number = 10
-enemies_speed = 1
+enemies_speed = 0.5
 
 # Player
 playerImg = pygame.image.load("media/characters/player.png")
@@ -36,7 +36,7 @@ enemyY_change = []
 for i in range(enemies_number):
     enemyImg.append(pygame.image.load("media/characters/enemy.png"))
     enemyX.append(random.randint(1, 730))
-    enemyY.append(20)
+    enemyY.append(40)
     enemyX_change.append(enemies_speed)
     enemyY_change.append(40)
 
@@ -61,6 +61,15 @@ def enemy_hit(enemyX, enemyY, bulletX, bulletY):
     if distance < 27 and bullet_state == "fire":
         return True
     return False
+
+# Screen scripts
+font = pygame.font.Font("media/fonts/Workbench-Regular.ttf", 32)
+textX = 10
+textY = 10
+
+def show_score_text(x, y):
+    score_text = font.render("Score: " + str(score), True, (255, 255, 255))
+    screen.blit(score_text, (x, y))
 
 # Game loop
 
@@ -114,11 +123,12 @@ while running:
             score += 1
             # The code below is to regenerate a new enemy when hit
             enemyX[i] = random.randint(1, 730)
-            enemyY[i] = 20
+            enemyY[i] = 40
             # The code below is to increase the difficulty incresing the enemies speed
             enemies_speed += 0.1
             enemyX_change[i] = enemies_speed
         
         enemy(i, enemyX[i], enemyY[i])
-
+    
+    show_score_text(textX, textY)
     pygame.display.update()
