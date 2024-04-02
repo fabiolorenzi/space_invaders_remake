@@ -15,6 +15,7 @@ pygame.display.set_icon(icon)
 # Main game variables
 score = 0
 enemies_number = 10
+enemies_speed = 1
 
 # Player
 playerImg = pygame.image.load("media/characters/player.png")
@@ -36,7 +37,7 @@ for i in range(enemies_number):
     enemyImg.append(pygame.image.load("media/characters/enemy.png"))
     enemyX.append(random.randint(1, 730))
     enemyY.append(20)
-    enemyX_change.append(1)
+    enemyX_change.append(enemies_speed)
     enemyY_change.append(40)
 
 def enemy(i, x, y):
@@ -100,11 +101,11 @@ while running:
         enemyX[i] += enemyX_change[i]
         if enemyX[i] <= 2:
             enemyX[i] = 2
-            enemyX_change[i] = 1
+            enemyX_change[i] = enemies_speed
             enemyY[i] += enemyY_change[i]
         elif enemyX[i] >= 730:
             enemyX[i] = 730
-            enemyX_change[i] = -1
+            enemyX_change[i] = enemies_speed * -1
 
         collision = enemy_hit(enemyX[i], enemyY[i], bulletX, bulletY)
         if collision:
@@ -114,7 +115,9 @@ while running:
             # The code below is to regenerate a new enemy when hit
             enemyX[i] = random.randint(1, 730)
             enemyY[i] = 20
-            enemyX_change[i] = 1
+            # The code below is to increase the difficulty incresing the enemies speed
+            enemies_speed += 0.1
+            enemyX_change[i] = enemies_speed
         
         enemy(i, enemyX[i], enemyY[i])
 
