@@ -57,7 +57,7 @@ while running:
                 playerX_change = -3
             elif event.key == pygame.K_RIGHT:
                 playerX_change = 3
-            elif event.key == pygame.K_SPACE:
+            elif event.key == pygame.K_SPACE and bullet_state == "ready":
                 bulletX = playerX
                 shoot_bullet(playerX, bulletY)
         if event.type == pygame.KEYUP:
@@ -70,6 +70,7 @@ while running:
         shoot_bullet(bulletX, bulletY)
         bulletY -= bulletY_change
         if bulletY <= 5:
+            bulletY = 470
             bullet_state = "ready"
 
     if playerX + playerX_change > 2 and playerX + playerX_change < 730:
