@@ -15,7 +15,7 @@ pygame.display.set_icon(icon)
 # Main game variables
 score = 0
 enemies_number = 10
-enemies_speed = 0.5
+enemies_speed = 0.1
 is_player_dead = False
 
 # Player
@@ -96,9 +96,9 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                playerX_change = -3
+                playerX_change = -2
             elif event.key == pygame.K_RIGHT:
-                playerX_change = 3
+                playerX_change = 2
             elif event.key == pygame.K_SPACE and bullet_state == "ready":
                 bullet_sound = pygame.mixer.Sound("media/audio/bullet.wav")
                 bullet_sound.play()
@@ -147,7 +147,7 @@ while running:
             enemyX[i] = random.randint(1, 730)
             enemyY[i] = 40
             # The code below is to increase the difficulty incresing the enemies speed
-            enemies_speed += 0.1
+            enemies_speed += 0.05
             enemyX_change[i] = enemies_speed
         
         if is_player_dead == False:
