@@ -14,6 +14,7 @@ pygame.display.set_icon(icon)
 
 # Main game variables
 score = 0
+enemies_number = 10
 
 # Player
 playerImg = pygame.image.load("media/characters/player.png")
@@ -25,14 +26,21 @@ def player(x, y):
     screen.blit(playerImg, (x, y))
 
 # Enemy
-enemyImg = pygame.image.load("media/characters/enemy.png")
-enemyX = random.randint(1, 730)
-enemyY = 20
-enemyX_change = 1
-enemyY_change = 20
+enemyImg = []
+enemyX = []
+enemyY = []
+enemyX_change = []
+enemyY_change = []
 
-def enemy(x, y):
-    screen.blit(enemyImg, (x, y))
+for i in range(enemies_number):
+    enemyImg.append(pygame.image.load("media/characters/enemy.png"))
+    enemyX.append(random.randint(1, 730))
+    enemyY.append(20)
+    enemyX_change.append(1)
+    enemyY_change.append(40)
+
+def enemy(i, x, y):
+    screen.blit(enemyImg[i], (x, y))
 
 # Bullet
 bulletImg = pygame.image.load("media/objects/bullet.png")
@@ -83,26 +91,31 @@ while running:
         if bulletY <= 5:
             bulletY = 460
             bullet_state = "ready"
-    
-    collision = enemy_hit(enemyX, enemyY, bulletX, bulletY)
-    if collision:
-        bulletY = 460
-        bullet_state = "ready"
-        score += 1
-        print(score)
 
     if playerX + playerX_change > 2 and playerX + playerX_change < 730:
         playerX += playerX_change
     player(playerX, playerY)
 
-    enemyX += enemyX_change
-    if enemyX <= 2:
-        enemyX = 2
-        enemyX_change = 1
-        enemyY += enemyY_change
-    elif enemyX >= 730:
-        enemyX = 730
-        enemyX_change = -1
-    enemy(enemyX, enemyY)
+    for i in range(enemies_number):
+        enemyX[i] += enemyX_change[i]
+        if enemyX[i] <= 2:
+            enemyX[i] = 2
+            enemyX_change[i] = 1
+            enemyY[i] += enemyY_change[i]
+        elif enemyX[i] >= 730:
+            enemyX[i] = 730
+            enemyX_change[i] = -1
+
+        collision = enemy_hit(enemyX[i], enemyY[i], bulletX, bulletY)
+        if collision:
+            bulletY = 460
+            bullet_state = "ready"
+            score += 1
+            print(score)
+            enemyX[i] = random.randint(1, 730)
+            enemyY[i] = 20
+            enemyX_change[i] = 1
+        
+        enemy(i, enemyX[i], enemyY[i])
 
     pygame.display.update()
